@@ -7,9 +7,13 @@ This project involves designing and implementing database models for three diffe
 ## Technologies Used
 
 PostgreSQL – Relational Database Management System (RDBMS)
+
 MongoDB – NoSQL Document-Oriented Database
+
 Neo4j – Graph Database
+
 Hackolade– Database modeling tool 
+
 Python – Data processing and transformation
 
 
