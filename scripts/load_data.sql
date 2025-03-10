@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS friends (
 	friend bigint,
 	friend2 bigint
-) TABLESPACE pg_default;
+) ;
 
 CREATE TABLE IF NOT EXISTS campaigns (
 	id integer NOT NULL,
@@ -24,27 +24,33 @@ CREATE TABLE IF NOT EXISTS campaigns (
 	is_test boolean,
 	position integer,
 	PRIMARY KEY (id, campaign_type)
-) TABLESPACE pg_default;
+);
+
+CREATE TABLE IF NOT EXISTS products (
+	product_id integer NOT NULL,
+	category_id bigint NOT NULL,
+	brand varchar,
+	category_code varchar,
+	PRIMARY KEY (product_id, category_id)
+);
 
 CREATE TABLE IF NOT EXISTS events (
 	event_time timestamp,
 	event_type varchar(10),
-	product_id bigint,
+	product_id integer,
 	category_id bigint,
-	category_code varchar(40),
-	brand varchar(30),
 	price real,
 	user_id bigint,
-	user_session varchar(36)
-) TABLESPACE pg_default;
+	user_session varchar(36),
+	CONSTRAINT "New Relationship" FOREIGN KEY (product_id, category_id) REFERENCES products (product_id, category_id)
+);
 
 CREATE TABLE IF NOT EXISTS client_first_purchase_date (
 	client_id bigint PRIMARY KEY,
 	first_purchase_date date,
 	user_id bigint,
 	user_device_id smallint
-) TABLESPACE pg_default;
-
+) ;
 CREATE TABLE IF NOT EXISTS messages (
 	id integer PRIMARY KEY,
 	message_id varchar(36),
@@ -80,13 +86,14 @@ CREATE TABLE IF NOT EXISTS messages (
 	updated_at timestamp,
 	user_device_id smallint,
 	user_id bigint
-) TABLESPACE pg_default;
+);
 
 
-COPY public.campaigns FROM 'D:\datasets\assigment\cleaned\Clean_Campaings.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8' null as '';
-COPY public.messages FROM 'D:\datasets\assigment\cleaned\Clean_Messages.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8';
-COPY public.client_first_purchase_date FROM 'D:\datasets\assigment\cleaned\Clean_client_first_purchase_date.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8';
-COPY public.events FROM 'D:\datasets\assigment\cleaned\Clean_Events.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8';
-COPY public.friends FROM 'D:\datasets\assigment\cleaned\Clean_Friends.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8';
+\COPY campaigns FROM '.\data\cleaned_data_psql\Clean_Campaings.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8' null as '';
+\COPY messages FROM '.\data\cleaned_data_psql\Clean_Messages.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8';
+\COPY client_first_purchase_date FROM '.\data\cleaned_data_psql\Clean_client_first_purchase_date.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8';
+\COPY products FROM '.\data\cleaned_data_psql\Clean_Products.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8';
+\COPY events FROM '.\data\cleaned_data_psql\Clean_Events.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8';
+\COPY friends FROM '.\data\cleaned_data_psql\Clean_Friends.csv' DELIMITER ',' CSV HEADER ENCODING 'UTF8';
 
 COMMIT
